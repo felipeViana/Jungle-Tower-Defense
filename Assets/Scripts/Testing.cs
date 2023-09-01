@@ -15,19 +15,14 @@ public class Testing : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            grid.SetValue(GetMouseWorldPosition(), 42);
+            grid.SetValue(Utils.GetMouseWorldPosition(), 42);
         }
 
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log(grid.GetValue(GetMouseWorldPosition()));
+            Debug.Log(grid.GetValue(Utils.GetMouseWorldPosition()));
         }
     }
 
-    private static Vector3 GetMouseWorldPosition()
-    {
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        worldPosition.z = 0f;
-        return worldPosition;
-    }
+    
 }
