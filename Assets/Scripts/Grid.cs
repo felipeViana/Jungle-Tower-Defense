@@ -8,22 +8,26 @@ public class Grid
     private int width;
     private int height;
     private float cellSize;
-    private int[,] gridArray;
+    private Vector3 originPosition;
+    private PathNode[,] gridArray;
     private TextMesh[,] debugTextArray;
 
-    public Grid(int width, int height, float cellSize)
+    public Grid(int width, int height, float cellSize, Vector3 originPosition)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
+        this.originPosition = originPosition;
 
-        this.gridArray = new int[width, height];
+        this.gridArray = new PathNode[width, height];
         this.debugTextArray = new TextMesh[width, height];
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
+                gridArray[x, y] = new PathNode(this, x, y);
+
                 debugTextArray[x, y] = Utils.CreateWorldText(gridArray[x, y].ToString(), Color.white, GetWorldPosition(x, y) + new Vector3(cellSize / 2, cellSize / 2));
 
                 Debug.DrawLine(GetWorldPosition(x, y), GetWorldPosition(x + 1, y), Color.white, 100f);
@@ -34,32 +38,42 @@ public class Grid
         Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), Color.white, 100f);
     }
 
-    public void SetValue(int x, int y, int value)
+    public int GetWidth()
+    {
+        return width;
+    }
+
+    public int GetHeight()
+    {
+        return height;
+    }
+
+    public void SetNode(int x, int y, PathNode node)
     {
         if (isValid(x, y))
         {
-            gridArray[x, y] = value;
-            debugTextArray[x, y].text = value.ToString();
+            gridArray[x, y] = node;
+            debugTextArray[x, y].text = node.ToString();
         }
     }
 
-    public void SetValue(Vector3 worldPosition, int value)
+    public void SetNode(Vector3 worldPosition, PathNode node)
     {
         Vector2 coordinates = GetXY(worldPosition);
-        SetValue((int)coordinates.x, (int)coordinates.y, value);
+        SetNode((int)coordinates.x, (int)coordinates.y, node);
     }
 
-    public int GetValue(int x, int y)
+    public PathNode GetNode(int x, int y)
     {
         if (isValid(x, y)) return gridArray[x, y];
 
-        return -1;
+        return default(PathNode);
     }
 
-    public int GetValue(Vector3 worldPosition)
+    public PathNode GetNode(Vector3 worldPosition)
     {
         Vector2 coordinates = GetXY(worldPosition);
-        return GetValue((int)coordinates.x, (int)coordinates.y);
+        return GetNode((int)coordinates.x, (int)coordinates.y);
     }
 
     private bool isValid(int x, int y)
@@ -69,13 +83,14 @@ public class Grid
 
     private Vector3 GetWorldPosition(int x, int y)
     {
-        return new Vector3(x, y) * cellSize;
+        return new Vector3(x, y) * cellSize + originPosition;
     }
 
-    private Vector2 GetXY(Vector3 worldPosition)
+    public Vector2 GetXY(Vector3 worldPosition)
     {
-        int x = Mathf.FloorToInt(worldPosition.x / cellSize);
-        int y = Mathf.FloorToInt(worldPosition.y / cellSize);
+        Vector3 actualPosition = worldPosition - originPosition;
+        int x = Mathf.FloorToInt(actualPosition.x / cellSize);
+        int y = Mathf.FloorToInt(actualPosition.y / cellSize);
 
         return new Vector2(x, y);
     }
