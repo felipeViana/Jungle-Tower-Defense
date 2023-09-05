@@ -58,6 +58,11 @@ public class GameManager : MonoBehaviour
     {
         playerHealth += modifier;
         UpdateLifeText();
+
+        if (playerHealth <= 0)
+        {
+            GameOver();
+        }
         
         return playerHealth;
     }
@@ -68,5 +73,13 @@ public class GameManager : MonoBehaviour
         LifeText.GetComponent<TMP_Text>().text = "LIFE: " + playerHealth.ToString();
     }
 
-    
+    private void GameOver()
+    {
+        // TODO: add option to restart game
+
+        // close game
+        Debug.Log("closing game ..");
+        Application.Quit();
+
+    }
 }
