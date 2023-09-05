@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Pathfinding
@@ -33,7 +34,6 @@ public class Pathfinding
             {
                 PathNode node = grid.GetNode(x, y);
                 node.gCost = int.MaxValue;
-                node.CalculateFCost();
                 node.cameFromNode = null;
             }
         }
@@ -42,7 +42,7 @@ public class Pathfinding
         startNode.hCost = CalculateDistanceCost(startNode, endNode);
         startNode.CalculateFCost();
 
-        while(openList.Count > 0)
+        while (openList.Count > 0)
         {
             PathNode currentNode = GetLowestFCostNode(openList);
             if (currentNode == endNode)
@@ -102,8 +102,10 @@ public class Pathfinding
             // Right Up
             if (currentNode.GetY() + 1 < grid.GetHeight()) neighbourList.Add(grid.GetNode(currentNode.GetX() + 1, currentNode.GetY() + 1));
         }
+
         // Down
         if (currentNode.GetY() - 1 >= 0) neighbourList.Add(grid.GetNode(currentNode.GetX(), currentNode.GetY() - 1));
+        
         // Up
         if (currentNode.GetY() + 1 < grid.GetHeight()) neighbourList.Add(grid.GetNode(currentNode.GetX(), currentNode.GetY() + 1));
 
@@ -131,7 +133,7 @@ public class Pathfinding
         int xDistance = Mathf.Abs(a.GetX() - b.GetX());
         int yDistance = Mathf.Abs(a.GetY() - b.GetY());
         int remaining = Mathf.Abs(xDistance - yDistance);
-        return MOVE_DIAGONAL_COST + Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining;
+        return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining;
     }
 
     private PathNode GetLowestFCostNode(List<PathNode> nodes)
@@ -145,6 +147,4 @@ public class Pathfinding
 
         return lowestFCostNode;
     }
-
-
 }

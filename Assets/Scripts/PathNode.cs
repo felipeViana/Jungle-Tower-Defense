@@ -8,8 +8,8 @@ public class PathNode
     private int x;
     private int y;
 
-    public int gCost;
-    public int hCost;
+    public int gCost; // walking cost from start node
+    public int hCost; // heuristic cost to reach end node
     public int fCost;
 
     public PathNode cameFromNode;
