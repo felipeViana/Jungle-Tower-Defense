@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateLifeText()
     {
-        var LifeText = GameObject.Find("Life");
+        var LifeText = GameObject.Find("LifeText");
         LifeText.GetComponent<TMP_Text>().text = "LIFE: " + playerHealth.ToString();
     }
 

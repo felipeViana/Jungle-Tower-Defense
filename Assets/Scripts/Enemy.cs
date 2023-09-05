@@ -10,15 +10,13 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        var spawner = GameObject.Find("WaveSpawner");
-
-        this.transform.position = spawner.transform.position;
+        this.transform.position = WaveSpawner.Instance.transform.position;
     }
 
     void Update()
     {
         // move to objective
-        var objective = GameObject.Find("Objective");
+        GameObject objective = GameObject.Find("Objective");
         Vector3 targetPosition = objective.transform.position;
         Vector3 moveDirection = (targetPosition - this.transform.position).normalized;
         this.transform.position += moveDirection * speed * Time.deltaTime;
@@ -28,6 +26,7 @@ public class Enemy : MonoBehaviour
         {
             // die
             Destroy(this.gameObject);
+            WaveSpawner.Instance.RemoveEnemy(this.gameObject);
 
             // take players health
             GameManager.Instance.ModifyPlayerHealth(-damage);
