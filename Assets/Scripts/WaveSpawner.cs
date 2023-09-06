@@ -73,6 +73,11 @@ public class WaveSpawner : MonoBehaviour
         }
     }
 
+    public List<GameObject> GetEnemies()
+    {
+        return enemies;
+    }
+
     public void RemoveEnemy(GameObject enemy)
     {
         enemies.Remove(enemy);

@@ -24,12 +24,23 @@ public class Enemy : MonoBehaviour
         // die when reach objective
         if (Vector3.Distance(this.transform.position, targetPosition) < 1f)
         {
-            // die
-            Destroy(this.gameObject);
-            WaveSpawner.Instance.RemoveEnemy(this.gameObject);
+            Die();
 
             // take players health
             GameManager.Instance.ModifyPlayerHealth(-damage);
         }
+    }
+
+    public void LoseLife(int amount)
+    {
+        this.life -= amount;
+
+        if (life <= 0) Die();
+    }
+
+    private void Die()
+    {
+        Destroy(this.gameObject);
+        WaveSpawner.Instance.RemoveEnemy(this.gameObject);
     }
 }
