@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour
         {
             Die();
             GameManager.Instance.ModifyGold(50);
-            GameManager.Instance.GainPoints(1);
+            GameManager.Instance.GainPoints(10);
         }
     }
 

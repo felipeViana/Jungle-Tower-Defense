@@ -12,7 +12,7 @@ public class GridManager
     private PathNode[,] gridArray;
     private TextMesh[,] debugTextArray;
 
-    private bool debug = true;
+    private bool debug = false;
 
     public GridManager(int width, int height, float cellSize, Vector3 originPosition)
     {
@@ -101,6 +101,14 @@ public class GridManager
         Vector2 coordinates = GetXY(worldPosition);
 
         return isValid((int)coordinates.x, (int)coordinates.y);
+    }
+
+    public bool isWalkable(Vector3 worldPosition)
+    {
+        PathNode node = GetNode(worldPosition);
+
+        if (node == null) return false;
+        return node.isWalkable;
     }
 
     private Vector3 GetWorldPosition(int x, int y)

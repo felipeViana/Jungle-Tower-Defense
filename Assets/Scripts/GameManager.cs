@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
         int towerCost = towerType.GetComponent<Tower>().GetCost();
         GridManager grid = pathfinding.GetGrid();
 
-        if (grid.isValid(position) && gold >= towerCost)
+        if (grid.isValid(position) && gold >= towerCost && grid.isWalkable(position))
         {
             ModifyGold(-towerCost);
             

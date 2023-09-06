@@ -87,7 +87,11 @@ public class WaveSpawner : MonoBehaviour
 
     private int EnemiesCountForWave()
     {
-        return wave + 3;
+        if (wave < 4) return wave + 3;
+
+        if (wave < 8) return wave * 2 + 3;
+
+        return wave * wave;
     }
 
     private void UpdateWaveText()
