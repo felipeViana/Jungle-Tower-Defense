@@ -5,6 +5,8 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - SimpleTower: {fileID: 2479792519449904170, guid: c6470ed83d8c379478f511dc69eaad5a, type: 3}
+  - FastTower: {fileID: 7937354389216416707, guid: 2d1581a3958573b4c95e044601689c3e, type: 3}
+  - BigTower: {fileID: 6651520983217776337, guid: 45a7494128dbff142b95e17cb99c8755, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

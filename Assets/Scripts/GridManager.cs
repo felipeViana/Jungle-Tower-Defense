@@ -96,6 +96,13 @@ public class GridManager
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
+    public bool isValid(Vector3 worldPosition)
+    {
+        Vector2 coordinates = GetXY(worldPosition);
+
+        return isValid((int)coordinates.x, (int)coordinates.y);
+    }
+
     private Vector3 GetWorldPosition(int x, int y)
     {
         return new Vector3(x, y) * cellSize + originPosition;

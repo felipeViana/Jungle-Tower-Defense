@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     private bool isBuilding = false;
     private int buildType = 0;
+    private TMP_Text placeTowerText;
 
     public static GameManager Instance { get; private set; }
 
@@ -28,6 +29,8 @@ public class GameManager : MonoBehaviour
         UpdateLifeText();
         UpdateGoldText();
         UpdatePointsText();
+
+        placeTowerText = GameObject.Find("PlaceTowerText").GetComponent<TMP_Text>();
     }
 
     private void Update()
@@ -39,39 +42,11 @@ public class GameManager : MonoBehaviour
             if (isBuilding)
             {
                 isBuilding = false;
+                placeTowerText.text = "";
 
-                Debug.Log("trying to build tower on: " + position.x + ", " + position.y);
                 CreateTowerAt(mouseWorldPosition);
             }
-
-
-            //Debug.Log(position);
-
-            //List<PathNode> path = pathfinding.FindPath(0, 0, (int)position.x, (int)position.y);
-
-            //if (path != null)
-            //{
-            //    Debug.Log("found a path");
-            //    for (int i = 0; i < path.Count - 1; i++)
-            //    {
-            //        Debug.Log(path[i]);
-            //        Debug.DrawLine(
-            //            new Vector3(path[i].GetX(), path[i].GetY()) * 10f + Vector3.one * 5f,
-            //            new Vector3(path[i + 1].GetX(), path[i + 1].GetY()) * 10f + Vector3.one * 5f,
-            //            Color.red,
-            //            3f
-            //        );
-            //    }
-
-            //    var enemy = GameObject.Find("EnemyMedium");
-            //    enemy.transform.position = mouseWorldPosition;
-            //}
         }
-
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    Debug.Log(grid.GetValue(Utils.GetMouseWorldPosition()));
-        //}
     }
 
     public Pathfinding GetPathfinding()
@@ -140,6 +115,7 @@ public class GameManager : MonoBehaviour
     public void SetIsBuilding(int type)
     {
         isBuilding = true;
+        placeTowerText.text = "Click on map to place tower!";
         buildType = type;
     }
 
@@ -163,13 +139,12 @@ public class GameManager : MonoBehaviour
         int towerCost = towerType.GetComponent<Tower>().GetCost();
         GridManager grid = pathfinding.GetGrid();
 
-        Vector3 centeredPosition = grid.CenterPositionOnCell(position);
-
-        if (gold >= towerCost)
+        if (grid.isValid(position) && gold >= towerCost)
         {
             ModifyGold(-towerCost);
+            
+            Vector3 centeredPosition = grid.CenterPositionOnCell(position);
             Instantiate(towerType, centeredPosition, Quaternion.identity);
-
             grid.SetNodeUnWalkable(centeredPosition);
 
             // recalculate routes for each enemy
