@@ -43,13 +43,13 @@ public class WaveSpawner : MonoBehaviour
             {
                 case 0:
                 default:
-                    enemies.Add(Instantiate(EnemyMedium, this.transform.position, Quaternion.identity));
+                    enemies.Add(Instantiate(EnemyMedium, EnemyMedium.transform.position, EnemyMedium.transform.rotation));
                     break;
                 case 1:
-                    enemies.Add(Instantiate(EnemyBig, this.transform.position, Quaternion.identity));
+                    enemies.Add(Instantiate(EnemyBig, EnemyBig.transform.position, EnemyBig.transform.rotation));
                     break;
                 case 2:
-                    enemies.Add(Instantiate(EnemySmall, this.transform.position, Quaternion.identity));
+                    enemies.Add(Instantiate(EnemySmall, EnemySmall.transform.position, EnemySmall.transform.rotation));
                     break;
             }
         }
