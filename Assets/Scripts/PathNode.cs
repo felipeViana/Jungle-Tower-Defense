@@ -34,6 +34,7 @@ public class PathNode
 
     public override string ToString()
     {
-        return isWalkable+"";
+        return isWalkable + "";
+        //return x + ", " + y;
     }
 }

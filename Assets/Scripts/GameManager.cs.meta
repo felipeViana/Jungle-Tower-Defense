@@ -3,7 +3,8 @@ guid: f1f8dfbfcf4ffb04c97b22c896db257e
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - SimpleTower: {fileID: 2479792519449904170, guid: c6470ed83d8c379478f511dc69eaad5a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

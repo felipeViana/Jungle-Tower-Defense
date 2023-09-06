@@ -5,11 +5,18 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject SimpleTower;
+    public GameObject FastTower;
+    public GameObject BigTower;
+
     [SerializeField] private int playerHealth = 100;
     private Pathfinding pathfinding;
 
     private int gold = 200;
     private int points = 0;
+
+    private bool isBuilding = false;
+    private int buildType = 0;
 
     public static GameManager Instance { get; private set; }
 
@@ -25,33 +32,41 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Vector3 mouseWorldPosition = Utils.GetMouseWorldPosition();
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mouseWorldPosition = Utils.GetMouseWorldPosition();
+            Vector2 position = pathfinding.GetGrid().GetXY(mouseWorldPosition);
+            if (isBuilding)
+            {
+                isBuilding = false;
 
-        //    Vector2 position = pathfinding.GetGrid().GetXY(mouseWorldPosition);
-        //    Debug.Log(position);
+                Debug.Log("trying to build tower on: " + position.x + ", " + position.y);
+                CreateTowerAt(mouseWorldPosition);
+            }
 
-        //    List<PathNode> path = pathfinding.FindPath(0, 0, (int)position.x, (int)position.y);
 
-        //    if (path != null)
-        //    {
-        //        Debug.Log("found a path");
-        //        for (int i = 0; i < path.Count - 1; i++) 
-        //        {
-        //            Debug.Log(path[i]);
-        //            Debug.DrawLine(
-        //                new Vector3(path[i].GetX(), path[i].GetY()) * 10f + Vector3.one * 5f,
-        //                new Vector3(path[i + 1].GetX(), path[i + 1].GetY()) * 10f + Vector3.one * 5f,
-        //                Color.red,
-        //                3f
-        //            );
-        //        }
+            //Debug.Log(position);
 
-        //        var enemy = GameObject.Find("EnemyMedium");
-        //        enemy.transform.position = mouseWorldPosition;
-        //    }
-        //}
+            //List<PathNode> path = pathfinding.FindPath(0, 0, (int)position.x, (int)position.y);
+
+            //if (path != null)
+            //{
+            //    Debug.Log("found a path");
+            //    for (int i = 0; i < path.Count - 1; i++)
+            //    {
+            //        Debug.Log(path[i]);
+            //        Debug.DrawLine(
+            //            new Vector3(path[i].GetX(), path[i].GetY()) * 10f + Vector3.one * 5f,
+            //            new Vector3(path[i + 1].GetX(), path[i + 1].GetY()) * 10f + Vector3.one * 5f,
+            //            Color.red,
+            //            3f
+            //        );
+            //    }
+
+            //    var enemy = GameObject.Find("EnemyMedium");
+            //    enemy.transform.position = mouseWorldPosition;
+            //}
+        }
 
         //if (Input.GetMouseButtonDown(1))
         //{
@@ -120,5 +135,49 @@ public class GameManager : MonoBehaviour
     public int GetGold()
     {
         return gold;
+    }
+
+    public void SetIsBuilding(int type)
+    {
+        isBuilding = true;
+        buildType = type;
+    }
+
+    private void CreateTowerAt(Vector3 position)
+    {
+        GameObject towerType;
+
+        switch (buildType)
+        {
+            case 0:
+            default:
+                towerType = SimpleTower; break;
+
+            case 1:
+                towerType = FastTower; break;
+
+            case 2:
+                towerType = BigTower; break;
+        }
+
+        int towerCost = towerType.GetComponent<Tower>().GetCost();
+        GridManager grid = pathfinding.GetGrid();
+
+        Vector3 centeredPosition = grid.CenterPositionOnCell(position);
+
+        if (gold >= towerCost)
+        {
+            ModifyGold(-towerCost);
+            Instantiate(towerType, centeredPosition, Quaternion.identity);
+
+            grid.SetNodeUnWalkable(centeredPosition);
+
+            // recalculate routes for each enemy
+            List<GameObject> enemies = WaveSpawner.Instance.GetEnemies();
+            foreach (GameObject enemy in enemies)
+            {
+                enemy.GetComponent<Enemy>().SetTargetPosition();
+            }
+        }
     }
 }

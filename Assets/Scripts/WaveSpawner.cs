@@ -57,13 +57,15 @@ public class WaveSpawner : MonoBehaviour
         UpdateTimeText();
 
         // finish wave and start next one
-        if (enemiesSpawned > 0 && enemies.Count == 0)
+        if (enemiesSpawned == EnemiesCountForWave() && enemies.Count == 0)
         {
             timePassedAfterWave += Time.deltaTime;
             UpdateTimeText();
             if (timePassedAfterWave > timeBetweenWaves)
             {
                 wave++;
+                delayBetweenSpawns -= 0.05f;
+
                 enemiesSpawned = 0;
                 timePassedAfterSpawn = 0;
                 timePassedAfterWave = 0;

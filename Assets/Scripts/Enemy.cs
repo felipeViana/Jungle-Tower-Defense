@@ -39,17 +39,6 @@ public class Enemy : MonoBehaviour
             }
 
         }
-
-        //GameObject objective = GameObject.Find("Objective");
-        //Vector3 targetPosition = objective.transform.position;
-        //// die when reach objective
-        //if (Vector3.Distance(this.transform.position, targetPosition) < 1f)
-        //{
-        //    Die();
-
-        //    // take players health
-        //    GameManager.Instance.ModifyPlayerHealth(-damage);
-        //}
     }
 
     public void LoseLife(int amount)
