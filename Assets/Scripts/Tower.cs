@@ -10,6 +10,7 @@ public class Tower : MonoBehaviour
     [SerializeField] private float range = 100f;
     [SerializeField] private int damage = 25;
     [SerializeField] private float timeToShoot = 1f;
+    [SerializeField] private int cost = 100;
     private float timePassedAfterShoot = 0f;
 
     void Start()
@@ -30,7 +31,6 @@ public class Tower : MonoBehaviour
             for (int i = 0;  i < enemies.Count; i++)
             {
                 float distance = Vector3.Distance(enemies[i].transform.position, this.transform.position);
-                Debug.Log(distance);
                 if (distance < range)
                 {
                     hasEnemyInRange = true;
@@ -47,5 +47,10 @@ public class Tower : MonoBehaviour
         }
         
         timePassedAfterShoot += Time.deltaTime;
+    }
+
+    public int GetCost()
+    {
+        return cost;
     }
 }

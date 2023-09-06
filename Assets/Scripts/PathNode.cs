@@ -12,6 +12,7 @@ public class PathNode
     public int hCost; // heuristic cost to reach end node
     public int fCost;
 
+    public bool isWalkable;
     public PathNode cameFromNode;
 
     public PathNode(GridManager grid, int x, int y)
@@ -19,6 +20,7 @@ public class PathNode
         this.grid = grid;
         this.x = x;
         this.y = y;
+        this.isWalkable = true;
     }
 
     public int GetX() { return x; }
@@ -32,6 +34,6 @@ public class PathNode
 
     public override string ToString()
     {
-        return x + ", " + y;
+        return isWalkable+"";
     }
 }

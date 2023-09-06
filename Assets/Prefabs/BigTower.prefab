@@ -112,3 +112,4 @@ MonoBehaviour:
   range: 85
   damage: 50
   timeToShoot: 1.8
+  cost: 250

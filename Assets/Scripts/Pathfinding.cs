@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
+using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -13,12 +14,35 @@ public class Pathfinding
     private List<PathNode> openList;
     private List<PathNode> closedList;
 
+    public static Pathfinding Instance { get; private set; }
+
     public Pathfinding(int width, int height)
     {
         grid = new GridManager(width, height, 10f, Vector3.zero);
+        Instance = this;
     }
 
     public GridManager GetGrid() { return grid; }
+
+    public List<Vector3> FindPath(Vector3 startPosition, Vector3 endPosition)
+    {
+        Vector2 startCoordinates = grid.GetXY(startPosition);
+        Vector2 endCoordinates = grid.GetXY(endPosition);
+
+        List<PathNode> path = FindPath((int)startCoordinates.x, (int)startCoordinates.y, (int)endCoordinates.x, (int)endCoordinates.y);
+        if (path == null)
+        {
+            return null;
+        }
+
+        List<Vector3> vectorPath = new List<Vector3>();
+        foreach (PathNode node in path)
+        {
+            vectorPath.Add(new Vector3(node.GetX(), node.GetY(), -0.5f) * grid.GetCellSize() + Vector3.one * grid.GetCellSize() / 2);
+        }
+
+        return vectorPath;
+    }
 
     public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
     {
@@ -57,6 +81,11 @@ public class Pathfinding
             foreach (PathNode neighbourNode in GetNeighbourList(currentNode))
             {
                 if (closedList.Contains(neighbourNode)) continue;
+                if (!neighbourNode.isWalkable)
+                {
+                    closedList.Add(neighbourNode);
+                    continue;
+                }
 
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
                 if (tentativeGCost < neighbourNode.gCost)

@@ -12,6 +12,8 @@ public class GridManager
     private PathNode[,] gridArray;
     private TextMesh[,] debugTextArray;
 
+    private bool debug = false;
+
     public GridManager(int width, int height, float cellSize, Vector3 originPosition)
     {
         this.width = width;
@@ -22,7 +24,6 @@ public class GridManager
         this.gridArray = new PathNode[width, height];
         this.debugTextArray = new TextMesh[width, height];
 
-        bool debug = false;
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
@@ -56,12 +57,18 @@ public class GridManager
         return height;
     }
 
+    public float GetCellSize()
+    {
+        return cellSize;
+    }
+
     public void SetNode(int x, int y, PathNode node)
     {
         if (isValid(x, y))
         {
             gridArray[x, y] = node;
-            debugTextArray[x, y].text = node.ToString();
+
+            if (debug) debugTextArray[x, y].text = node.ToString();
         }
     }
 
@@ -101,5 +108,15 @@ public class GridManager
         int y = Mathf.FloorToInt(actualPosition.y / cellSize);
 
         return new Vector2(x, y);
+    }
+
+    public void SetNodeUnWalkable(Vector3 worldPosition)
+    {
+        PathNode node = GetNode(worldPosition);
+        if (node == null) return;
+
+        node.isWalkable = false;
+
+        SetNode(worldPosition, node);
     }
 }

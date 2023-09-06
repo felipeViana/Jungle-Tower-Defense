@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int playerHealth = 100;
     private Pathfinding pathfinding;
 
+    private int gold = 200;
+    private int points = 0;
+
     public static GameManager Instance { get; private set; }
 
     private void Start()
@@ -16,6 +19,8 @@ public class GameManager : MonoBehaviour
         pathfinding = new Pathfinding(10, 10);
 
         UpdateLifeText();
+        UpdateGoldText();
+        UpdatePointsText();
     }
 
     private void Update()
@@ -54,6 +59,11 @@ public class GameManager : MonoBehaviour
         //}
     }
 
+    public Pathfinding GetPathfinding()
+    {
+        return pathfinding;
+    }
+
     public int ModifyPlayerHealth(int modifier)
     {
         playerHealth += modifier;
@@ -69,8 +79,20 @@ public class GameManager : MonoBehaviour
 
     private void UpdateLifeText()
     {
-        var LifeText = GameObject.Find("LifeText");
-        LifeText.GetComponent<TMP_Text>().text = "LIFE: " + playerHealth.ToString();
+        var lifeText = GameObject.Find("LifeText");
+        lifeText.GetComponent<TMP_Text>().text = "LIFE: " + playerHealth.ToString();
+    }
+
+    private void UpdateGoldText()
+    {
+        var goldText = GameObject.Find("GoldText");
+        goldText.GetComponent<TMP_Text>().text = "GOLD: " + gold.ToString() + "g";
+    }
+
+    private void UpdatePointsText()
+    {
+        var pointsText = GameObject.Find("PointsText");
+        pointsText.GetComponent<TMP_Text>().text = "POINTS: " + points.ToString();
     }
 
     private void GameOver()
@@ -81,5 +103,22 @@ public class GameManager : MonoBehaviour
         Debug.Log("closing game ..");
         Application.Quit();
 
+    }
+
+    public void GainPoints(int amount)
+    {
+        points += amount;
+        UpdatePointsText();
+    }
+
+    public void ModifyGold(int amount)
+    {
+        gold += amount;
+        UpdateGoldText();
+    }
+
+    public int GetGold()
+    {
+        return gold;
     }
 }
