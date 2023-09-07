@@ -12,7 +12,7 @@ public class GridManager
     private PathNode[,] gridArray;
     private TextMesh[,] debugTextArray;
 
-    private bool debug = true;
+    private bool debug = false;
 
     public GridManager(int width, int height, float cellSize, Vector3 originPosition)
     {
