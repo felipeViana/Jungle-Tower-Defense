@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Bullet: {fileID: 8487125479604634882, guid: ea45480209a90094585915c311572be6, type: 3}
-  range: 30
+  range: 40
   damage: 12
-  timeToShoot: 0.4
+  timeToShoot: 0.3
   cost: 200

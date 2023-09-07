@@ -12,7 +12,7 @@ public class GridManager
     private PathNode[,] gridArray;
     private TextMesh[,] debugTextArray;
 
-    private bool debug = false;
+    private bool debug = true;
 
     public GridManager(int width, int height, float cellSize, Vector3 originPosition)
     {
@@ -140,6 +140,6 @@ public class GridManager
         Vector2 XY = GetXY(position);
         Vector3 worldPosition = GetWorldPosition((int)XY.x, (int)XY.y);
 
-        return worldPosition + Vector3.one * cellSize / 2;
+        return worldPosition + Vector3.one * cellSize / 2 + Vector3.back * 10;
     }
 }
